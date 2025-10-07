@@ -2,7 +2,7 @@
 
 use anchor_lang::prelude::*;
 
-declare_id!("Count3AcZucFDPSFBAeHkQ6AvttieKUkyJ8HiQGhQwe");
+declare_id!("EVt8C7gGdRuSjkm9hM92cLp9GjEZRgmtyWWccC7HnEFf");
 
 #[program]
 pub mod counter {
