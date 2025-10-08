@@ -10,6 +10,7 @@ import { useAnchorProvider } from '../solana/solana-provider'
 import { useTransactionToast } from '../use-transaction-toast'
 import { toast } from 'sonner'
 import { title } from 'process'
+import { error } from 'console'
 
 interface CreateEntryArgs{
   title: string;
@@ -54,6 +55,7 @@ export function useCounterProgram() {
     accounts,
     getProgramAccount,
     createEntry,
+    programId,
   };
 }
 
@@ -67,5 +69,34 @@ export function useCounterProgramAccount({ account }: { account: PublicKey }) {
     queryFn: () => program.account.journalEntryState.fetch(account),
   })
 
-  //tests
+  const updateEntry = useMutation<string, Error, PublicKey>({
+    mutationKey: [`journalEntry`, `delete`, { cluster }],
+    mutationFn: async ({ title, message }) => {
+      return program.methods.updateJournalEntry(title, message).rpc();
+    },
+    onSuccess: (signature) => {
+      transactionToast(signature);
+      accounts.refetch();
+    },
+    onError: (error) => {
+      toast.error(`Error updating entry: ${error.message}`);
+    },
+  });
+
+  const deleteEntry = useMutation({
+    mutationKey: [`journalEntry`, `delete`, { cluster }],
+    mutationFn: async (title: string) => {
+      return program.methods.deleteJournalEntry(title).rpc();
+    },
+    onSuccess: (signature) => {
+      transactionToast(signature);
+      accounts.refetch();
+    },
+  });
+
+  return {
+    accountQuery,
+    updateEntry,
+    deleteEntry,
+  };
 }
