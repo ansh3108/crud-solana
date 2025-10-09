@@ -4,7 +4,7 @@
  * Note that this is only a type helper and is not the actual IDL. The original
  * IDL can be found at `target/idl/counter.json`.
  */
-export type Crud = {
+export type Counter = {
   "address": "EVt8C7gGdRuSjkm9hM92cLp9GjEZRgmtyWWccC7HnEFf",
   "metadata": {
     "name": "counter",
